@@ -122,7 +122,7 @@ En la **Flutas App** hemos integrado varias librerías de Python para diferentes
 
 - **Nombre:** Samuel Palomino Restrepo.
 - **Ubicación:** Medellín, Antioquia.
-- **Información profesional:** Soy bachiller, actualmente estudiante de tercer semestre en el programa de Ingeniería de Sistemas e Informática en la Universidad Nacional - Sede Medellín. Tengo conocimientos básicos en Python, JavaScript, C# y SQL.
+- **Información profesional:** Soy Desarrollador de Software, actualmente estudiante de tercer semestre en el programa de Ingeniería de Sistemas e Informática en la Universidad Nacional - Sede Medellín. Tengo conocimientos y experiencia en Python, JavaScript, C#, SQL y NoSQL.
 
 ## Contacto 📲
 
