@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mapa de Clusters</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+        #map-container {
+            /* Ajusta la altura según las preferencias */
+            height: 600px;
+            width: 50%; 
+        }
+    </style>
+</head>
+<body>
+    <h1>Mapa de Clusters</h1>
+    
+    {% if sucessMessage %}
+        <p>{{ sucessMessage }}</p>
+        <!-- Formulario para seleccionar el número de clusters -->
+        <form method="GET">
+            <label for="num_clusters">Número de Clusters:</label>
+            <input type="number" id="num_clusters" name="num_clusters" min="1" value="{{ num_clusters }}">
+            <button type="submit">Actualizar</button>
+        </form>
+        
+        <div id="map-container">
+            <!-- Renderizar el mapa de Folium -->
+            {{ map_html | safe }}
+        </div>
+    {% else %}
+        <!-- Mostrar el mensaje de error -->
+        <p>{{ errorMessage }}</p>
+        <a href="{% url 'create_route' %}">Crear ruta</a>
+        <a href="{% url 'clustermap' %}">Volver a intentar</a>
+    {% endif %}
+</body>
+</html>
+{% endblock %}

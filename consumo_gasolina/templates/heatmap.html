@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mapa de Calor</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+        #map-container {
+            /* Ajusta la altura según las preferencias */
+            height: 600px; 
+            width: 50%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Mapa de Calor</h1>
+    {% if sucessMessage %}
+        <p>{{ sucessMessage }}</p>
+        <div id="map-container">
+            <!-- Aquí se renderizará el mapa -->
+            {{ map_html | safe }}
+        </div>
+    {% else %}
+        <p>{{ errorMessage }}</p>
+        <a href="{% url 'create_route' %}">Crear ruta</a>
+        <a href="{% url 'heatmap' %}">Volver a intentar</a>
+    {% endif %}
+</body>
+</html>
+{% endblock %}
