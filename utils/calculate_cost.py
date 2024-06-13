@@ -26,12 +26,22 @@ import geopandas as gpd
 from scipy.spatial import distance
 
 
+
 class CostCalculator():
     """
     Calcula el costo de viajar entre dos puntos.
     
     Atributos:
+        PRECIO_COMBUSTIBLE (dict): Precio del combustible según el tipo.
     
+    Métodos:
+        _is_null_query(query): Verifica si la consulta es nula.
+        
+        _calculate_distance(direccion_inicio, direccion_destino): Calcula la 
+        distancia entre dos puntos.
+        
+        calculate(query): Calcula el costo de combustible para viajar una 
+        distancia dada.
     """
     # Definir el precio del combustible según el tipo [$/L] [1gal = 3.79 L]
     # 15.000 y 10.000 pesos el galón de gasolina y diesel respectivamente

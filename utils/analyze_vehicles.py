@@ -50,6 +50,7 @@ class VehicleAnalyzer:
                      'combustible',
                      'categoria'
                      ]
+    
     CUANTITATIVAS_DISCRETAS = ['cilindros',
                                 'potencia',
                                 'tamano',
@@ -61,6 +62,14 @@ class VehicleAnalyzer:
                     'rendimiento_combinado',
                     'co2',
                     'nox'
+                    ]
+    
+    COLUMNAS_NUMERICAS = CUANTITATIVAS_DISCRETAS + CUANTITATIVAS
+    
+    COLUMNAS_DECIMALES = ['rendimiento_ciudad',
+                       'rendimiento_carretera',
+                       'rendimiento_combinado',
+                       'tamano'
                     ]
     
     # Definir el precio del combustible según el tipo [$/L] [1gal = 3.79 L]
@@ -230,18 +239,45 @@ class VehicleAnalyzer:
             
         Returns:
             pd.DataFrame: DataFrame de vehículos limpio.
-        """
-        # Eliminar filas con valores nulos
-        vehicles = vehicles.dropna()
-        
-        # Eliminar filas con valores duplicados
-        vehicles = vehicles.drop_duplicates()
-        
+        """      
         # Reemplaza los valores "?" con 0
-        vehicles['contaminacion_aire'].str.replace('?',
-         '0')
+        vehicles['contaminacion_aire'].str.replace('?', '0')
         
         return vehicles
+    
+    def _aproximate_values(self, vehicles: pd.DataFrame) -> pd.DataFrame:
+        """
+        Aproxima los valores de las columnas específicas a flotantes con
+        un decimal.
+        
+        Args:
+            vehicles (pd.DataFrame): DataFrame de vehículos a aproximar.
+            
+        Returns:
+            pd.DataFrame: DataFrame de vehículos con valores aproximados.
+        """
+        # Aproximar los valores de las columnas numéricas a sus tipos
+        for column in vehicles.columns:
+            if column in self.COLUMNAS_NUMERICAS:
+                if column in self.COLUMNAS_DECIMALES:
+                    column = str(column)
+                    vehicles = vehicles.fillna(0)
+                    vehicles[column] = vehicles[column].round(1)
+                else:
+                    vehicles[column] = vehicles[column].astype(int)
+
+        # Aproximar el costo anual de combustible a enteros
+        # Pendiente: Covertir a un valor aproximado multiplo de 50.000 o algo
+        # parecido
+        vehicles['costo_anual_combustible'] = vehicles[
+            'costo_anual_combustible'].astype(int)
+        
+        # Aproximar las emisiones anuales de CO2 y NOx a enteros
+        vehicles['co2_anual_kg'] = vehicles['co2_anual_kg'].astype(int)
+        vehicles['nox_anual_kg'] = vehicles['nox_anual_kg'].astype(int)
+        
+        return vehicles
+        
            
     def analyze(self, selected_vehicles) -> pd.DataFrame:
         """
@@ -272,19 +308,9 @@ class VehicleAnalyzer:
         # Unir los DataFrames horizontalmente
         analysis_df = pd.concat([diferencias_df, estimaciones_df], axis=1)
         
-        # Aproximar los valores de las columnas cuantitativas a enteros
-        for column in self.CUANTITATIVAS:
-            analysis_df = analysis_df.fillna(0)
-            analysis_df[column] = analysis_df[column].astype(int)
-            
-        for column in self.CUANTITATIVAS_DISCRETAS:
-            analysis_df = analysis_df.fillna(0)
-            analysis_df[column] = analysis_df[column].astype(int)
-            
-        analysis_df[
-            'costo_anual_combustible'] = analysis_df[
-                'costo_anual_combustible'].astype(int)
-        
+        # Aproximar los valores de las columnas específicas a flotantes
+        analysis_df = self._aproximate_values(analysis_df)
+                
         # Transponer el DataFrame para obtener 20 filas y n columnas
         # donde n es el número de vehículos
         analysis_df = analysis_df.T

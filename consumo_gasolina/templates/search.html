@@ -34,32 +34,39 @@
 
 <!-- Resultados de la búsqueda -->
 {% if not vehicles.empty %}
-    <h2>Resultados de la Búsqueda:</h2>
-    <ul>
-        {% for vehicle in vehicles %}
-            <li>
-                <strong>Marca:</strong> {{ vehicle.marca }}, 
-                <strong>Submarca:</strong> {{ vehicle.submarca }},
-                <strong>Año Modelo:</strong> {{ vehicle.modelo }}, 
-                <strong>Versión:</strong> {{ vehicle.version }},
-                <strong>Rendimiento en ciudad:</strong> {{ vehicle.rendimiento_ciudad }},
-                <!-- Definir la sección de más detalles para mostrar -->
-                <button type="button" onclick="showDetails('{{ vehicle.id }}')">Ver más</button>
-                <div id="details_{{ vehicle.id }}" style="display: none;">
-                    <!-- Se muestran más detalles del vehículo, como transmisión, cilindros, etc. -->
-                    <strong>Transmisión:</strong> {{ vehicle.transmision }},
-                    <strong>Cilindros:</strong> {{ vehicle.cilindros }},
-                    <strong>Combustible:</strong> {{ vehicle.combustible }},
-                    <strong>Rendimiento en carretera:</strong> {{ vehicle.rendimiento_carretera }},
-                    <strong>Rendimiento combinado:</strong> {{ vehicle.rendimiento_combinado }},
-                    <strong>Calificación efecto invernadero:</strong> {{ vehicle.efecto_invernadero }},
-                    <strong>Calificación contaminación del aire:</strong> {{ vehicle.contaminacion_aire }},
+    <div class="container mx-auto my-8">
+        <h2 class="text-3xl font-bold mb-6">Resultados de la Búsqueda:</h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            {% for vehicle in vehicles %}
+                <div class="bg-white shadow-md rounded-lg overflow-hidden">
+                    <div class="p-4">
+                        <h3 class="text-2xl font-bold text-primary">{{ vehicle.marca }} {{ vehicle.submarca }}</h3>
+                        <p class="text-sm text-secondary mt-2">
+                            <strong>Año Modelo:</strong> {{ vehicle.modelo }}<br>
+                            <strong>Versión:</strong> {{ vehicle.version }}<br>
+                            <strong>Rendimiento en ciudad:</strong> {{ vehicle.rendimiento_ciudad }}
+                        </p>
+                    </div>
+                    <div class="border-t border-gray-200">
+                        <details class="p-4">
+                            <summary class="cursor-pointer text-primary">Características</summary>
+                            <ul class="list-disc list-inside mt-2 text-sm text-secondary">
+                                <li><strong>Transmisión:</strong> {{ vehicle.transmision }}</li>
+                                <li><strong>Cilindros:</strong> {{ vehicle.cilindros }}</li>
+                                <li><strong>Combustible:</strong> {{ vehicle.combustible }}</li>
+                                <li><strong>Rendimiento en carretera:</strong> {{ vehicle.rendimiento_carretera }}</li>
+                                <li><strong>Rendimiento combinado:</strong> {{ vehicle.rendimiento_combinado }}</li>
+                                <li><strong>Calificación efecto invernadero:</strong> {{ vehicle.efecto_invernadero }}</li>
+                                <li><strong>Calificación contaminación del aire:</strong> {{ vehicle.contaminacion_aire }}</li>
+                            </ul>
+                        </details>
+                    </div>
                 </div>
-            </li>
-        {% endfor %}
-    </ul>
+            {% endfor %}
+        </div>
+    </div>
 {% else %}
-    <p>Prueba haciendo una búsqueda</p>
+    <p class="text-center text-lg text-gray-700">Prueba haciendo una búsqueda</p>
 {% endif %}
 
 </body>

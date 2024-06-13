@@ -93,10 +93,21 @@ WSGI_APPLICATION = 'flutasapp.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
-DATABASES = {
-    'default': dj_database_url.config(default='sqlite:///' + os.path.join('db.sqlite3'))
-}
+# Cargar la variable de entorno para determinar el entorno
+ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
 
+# Configuración de la base de datos según el entorno
+if ENVIRONMENT == 'production':
+    DATABASES = {
+        'default': dj_database_url.config(default='sqlite:///' + os.path.join(BASE_DIR, 'db.sqlite3'))
+    }
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.sqlite3',
+            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/5.0/ref/settings/#auth-password-validators
