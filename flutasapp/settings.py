@@ -94,7 +94,7 @@ WSGI_APPLICATION = 'flutasapp.wsgi.application'
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 # Cargar la variable de entorno para determinar el entorno
-ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
+ENVIRONMENT = os.getenv('ENVIRONMENT', 'production')
 
 # Configuración de la base de datos según el entorno
 if ENVIRONMENT == 'production':
